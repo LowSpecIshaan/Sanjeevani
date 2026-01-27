@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+env/
+*.env
+
+# Environment file (VERY IMPORTANT)
+.env
+
+# VSCode settings
+.vscode/
+
+# PyCharm
+.idea/
+
+# OS files
+.DS_Store
+
+# Flask uploads
+instance/

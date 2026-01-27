@@ -1,0 +1,7 @@
+<div class="hero-image mb-10" role="img" aria-label="Serene backwaters of Kerala with migrant workers in clean medical attire preparing health records by a coconut grove under sustainable green canopies, featuring calm water reflecting health symbols and zero waste medical supplies, in a warm earthy tone with lush greenery and subtle sunlight">
+    <img
+      src="./static/Kerala-tourism1.jpg"
+      alt="Serene backwaters of Kerala with migrant workers in clean medical attire preparing health records by a coconut grove under sustainable green canopies, featuring calm water reflecting health symbols and zero waste medical supplies, in a warm earthy tone with lush greenery and subtle sunlight"
+      onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(45deg, #16a34a, #059669)';"
+    />
+  </div>

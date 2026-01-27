@@ -1,0 +1,190 @@
+<nav class="navbar">
+    <div class="logo">HealthRecord</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#"><i class="fas fa-columns"></i> {% if session.get('lang') == 'ml' %}
+          ഡാഷ് ബോർഡ്
+          {% elif session.get('lang') == 'hn' %}
+          डैशबोर्ड
+          {% else %}
+          Dashboard
+          {% endif %} </a></li>
+      <li>
+        <a href="/econtent"><i class="fas fa-book-open"></i>
+          {% if session.get('lang') == 'ml' %}
+          ഇ-കണ്ടന്റ്
+          {% elif session.get('lang') == 'hn' %}
+          ई-कॉन्टेन्ट
+          {% else %}
+          E-Content
+          {% endif %}
+        </a>
+      </li>
+
+
+      <!-- 🔽 Language Dropdown -->
+      <li class="dropdown">
+        <a href="#"><i class="fas fa-globe"></i> {% if session.get('lang') == 'ml' %}
+          ഭാഷ
+          {% elif session.get('lang') == 'hn' %}
+          भाषा
+          {% else %}
+          Languages
+          {% endif %} <i class="fas fa-caret-down"></i></a>
+        <ul class="dropdown-menu">
+          <li><a href="/set_language/en">English</a></li>
+          <li><a href="/set_language/ml">മലയാളം (Malayalam)</a></li>
+          <li><a href="/set_language/hn">हिन्दी (Hindi)</a></li>
+        </ul>
+      </li>
+      <li><a href="/profile"><i class="fas fa-user"></i> {% if session.get('lang') == 'ml' %}
+          നിങ്ങളുടെ വിവരങ്ങൾ
+          {% elif session.get('lang') == 'hn' %}
+          आपकी जानकारी
+          {% else %}
+          Profile
+          {% endif %} </a></li>
+
+      <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> {% if session.get('lang') == 'ml' %}
+          എക്സിറ്റ്
+          {% elif session.get('lang') == 'hn' %}
+          लॉगआउट
+          {% else %}
+          Logout
+          {% endif %} </a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+  </nav>
+
+/* ✅ Navbar Styling */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #15803d; /* deeper green */
+  padding: 10px 20px;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar .logo {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.navbar .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.navbar .nav-links li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.navbar .nav-links li a:hover {
+  color: #fef08a; /* soft yellow highlight */
+}
+
+.navbar .hamburger {
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 1100;
+}
+
+/* 🔽 Dropdown Styling */
+.navbar .dropdown {
+  position: relative;
+}
+
+.navbar .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #f0fdf4; /* very light green */
+  list-style: none;
+  padding: 10px 0;
+  border-radius: 6px;
+  min-width: 160px;
+  z-index: 1200;
+}
+
+.navbar .dropdown-menu li {
+  padding: 8px 15px;
+}
+
+.navbar .dropdown-menu li a {
+  color: #065f46;
+  text-decoration: none;
+  display: block;
+}
+
+.navbar .dropdown-menu li a:hover {
+  color: #047857; /* teal hover */
+}
+
+/* Show dropdown on hover (desktop) */
+.navbar .dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* ✅ Responsive Navbar */
+@media (max-width: 768px) {
+  .navbar .dropdown-menu {
+    position: static;
+    min-width: unset;
+    background: #f0fdf4;
+    border-radius: 6px;
+    margin-top: 5px;
+    display: none; /* start hidden */
+    flex-direction: column;
+  }
+
+  .navbar .dropdown.open .dropdown-menu {
+    display: flex; /* toggle with JS */
+  }
+
+  .navbar .nav-links {
+    flex-direction: column;
+    background: #15803d;
+    position: absolute;
+    top: 55px;
+    right: 10px;
+    width: 200px;
+    border-radius: 8px;
+    padding: 15px;
+
+    /* Start hidden */
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+
+    /* Smooth animation */
+    transition: max-height 0.4s ease, opacity 0.4s ease;
+  }
+
+  .navbar .nav-links.active {
+    display: flex; /* Keep flex so children are visible */
+    max-height: 500px; /* Big enough for your links */
+    opacity: 1;
+  }
+
+  .navbar .hamburger {
+    display: block;
+  }
+}
+
+
+// Mobile navbar toggle
+document.getElementById("menu-btn").addEventListener("click", function () {
+  const menu = document.getElementById("mobile-menu");
+  menu.classList.toggle("hidden");
+});

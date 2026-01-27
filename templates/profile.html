@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../static/profile.css">
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">Sanjeevani</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/dashboard"><i class="fas fa-columns"></i> {% if session.get('lang') == 'ml' %}
+          ഡാഷ് ബോർഡ്
+          {% elif session.get('lang') == 'hn' %}
+          डैशबोर्ड
+          {% else %}
+          Dashboard
+          {% endif %} </a></li>
+      <li>
+        <a href="/econtent"><i class="fas fa-book-open"></i>
+          {% if session.get('lang') == 'ml' %}
+          ഇ-കണ്ടന്റ്
+          {% elif session.get('lang') == 'hn' %}
+          ई-कॉन्टेन्ट
+          {% else %}
+          E-Content
+          {% endif %}
+        </a>
+      </li>
+
+
+      <!-- 🔽 Language Dropdown -->
+      <li class="dropdown">
+        <a href="#"><i class="fas fa-globe"></i> {% if session.get('lang') == 'ml' %}
+          ഭാഷ
+          {% elif session.get('lang') == 'hn' %}
+          भाषा
+          {% else %}
+          Languages
+          {% endif %} <i class="fas fa-caret-down"></i></a>
+        <ul class="dropdown-menu">
+          <li><a href="/set_language/en">English</a></li>
+          <li><a href="/set_language/ml">മലയാളം (Malayalam)</a></li>
+          <li><a href="/set_language/hn">हिन्दी (Hindi)</a></li>
+        </ul>
+      </li>
+      <li><a href="/profile"><i class="fas fa-user"></i> {% if session.get('lang') == 'ml' %}
+          നിങ്ങളുടെ വിവരങ്ങൾ
+          {% elif session.get('lang') == 'hn' %}
+          आपकी जानकारी
+          {% else %}
+          Profile
+          {% endif %} </a></li>
+
+      <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> {% if session.get('lang') == 'ml' %}
+          എക്സിറ്റ്
+          {% elif session.get('lang') == 'hn' %}
+          लॉगआउट
+          {% else %}
+          Logout
+          {% endif %} </a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+  </nav>
+
+  <header>
+
+  </header>
+
+  <div class="container">
+    <!-- Profile Info + Picture -->
+    <div class="profile-wrapper">
+      <div class="profile-info">
+        <h2>{{ name }}</h2>
+        <p><strong>Email:</strong> {{ email }}</p>
+        <p><strong>AADHAAR ID:</strong> XXXX-XXXX-{{ aadhaar }}</p>
+        <p><strong>Address:</strong>{% if address and city %} {{ address }}, {{city}} {% else %} Not
+          Updated{%endif%}</p>
+      </div>
+      <div class="qr-wrapper" style="margin-top: 15px;">
+        <div id="qrcode"></div>
+        <center><p style="font-size: 0.8rem; color: #555;">Medical History</p></center>
+      </div>
+      <div class="profile-pic-wrapper">
+
+
+        {% if profile_pic %}
+        <img src="data:image/png;base64,{{ profile_pic }}" alt="Profile Picture" class="profile-pic">
+        {% else %}
+        <div class="no-pic">
+          <img src="../static/download.png" alt="No Profile Picture :(" class="no-profile-pic">
+        </div>
+
+        <!-- Only show upload if no profile picture -->
+        <p>You haven't uploaded a profile picture</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Profile Cards -->
+    <div class="cards">
+      <div class="card" onclick="showSection('edit')">
+        <i class="fas fa-user-edit"></i>
+        <p>Edit Profile</p>
+      </div>
+      <a href = "/schemes" style="text-decoration:none;"><div class="card" onclick="showSection('documents')">
+        <i class="fas fa-hand-holding-medical"></i>
+        <p>Know about Government Programs</p>
+      </div>
+    </div></div>
+
+    <div id="content" class="content"></div>
+  </div>
+  <footer class="footer">
+    <div class="footer-content">
+      <p>&copy; 2025 Sanjeevani. All rights reserved.</p>
+      <p>
+        <a href="/terms">Terms & Conditions</a> |
+        <span>This app uses your Aadhaar information ONLY for Authentication.</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script src="../static/profile.js"></script>
+  <script>
+    // Profile card section loader
+    function showSection(section) {
+      const content = document.getElementById("content");
+      content.innerHTML = "";
+
+      if (section === "edit") {
+        content.innerHTML = `
+      <h3>Edit Profile</h3>
+      <form id="editProfileForm" action="/profile" method="POST" enctype="multipart/form-data">
+  <!-- Name (read-only) -->
+  <div class="form-group">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" value="{{ name }}" readonly>
+  </div>
+
+  <!-- Email (read-only) -->
+  <div class="form-group">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="{{ email }}" readonly>
+  </div>
+
+  <!-- Aadhaar (read-only) -->
+  <div class="form-group">
+    <label for="aadhaar">AADHAAR ID:</label>
+    <input type="text" id="aadhaar" name="aadhaar" value="XXXX-XXXX-{{ aadhaar }}" readonly>
+  </div>
+
+  <!-- Address (editable) -->
+  <div class="form-group address-group">
+    <label>Address:</label>
+    <div class="address-inputs">
+      <input type="text" name="address" id="address" placeholder="House/Street Number" value="{{ address }}" required>
+      <select name="city" id="city" required>
+        <option value="" disabled selected>Select City</option>
+        <option value="Thiruvananthapuram" {% if city == 'Thiruvananthapuram' %}selected{% endif %}>Thiruvananthapuram</option>
+        <option value="Kochi" {% if city == 'Kochi' %}selected{% endif %}>Kochi</option>
+        <option value="Kozhikode" {% if city == 'Kozhikode' %}selected{% endif %}>Kozhikode</option>
+        <option value="Kollam" {% if city == 'Kollam' %}selected{% endif %}>Kollam</option>
+        <option value="Alappuzha" {% if city == 'Alappuzha' %}selected{% endif %}>Alappuzha</option>
+        <option value="Thrissur" {% if city == 'Thrissur' %}selected{% endif %}>Thrissur</option>
+        <option value="Kannur" {% if city == 'Kannur' %}selected{% endif %}>Kannur</option>
+        <option value="Palakkad" {% if city == 'Palakkad' %}selected{% endif %}>Palakkad</option>
+        <!-- Add more cities as needed -->
+      </select>
+    </div>
+  </div>
+
+  <!-- Profile picture upload (only if doesn't exist or for update) -->
+  <div class="form-group">
+    <label for="profile_pic">Profile Picture:</label>
+    <input type="file" id="profilePicInput" name="profile_pic" accept="image/*">
+    {% if profile_pic %}
+      <p>Current profile picture shown above. Upload to change.</p>
+    {% endif %}
+  </div>
+
+  <button type="submit">Save Changes</button>
+</form>
+
+    `;
+
+        // Optional: preview uploaded image before submitting
+        const profilePicInput = document.getElementById("profilePicInput");
+        if (profilePicInput) {
+          profilePicInput.addEventListener("change", e => {
+            const file = e.target.files[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = ev => {
+                const wrapper = document.querySelector(".profile-pic-wrapper");
+                wrapper.innerHTML = `<img src="${ev.target.result}" class="profile-pic">`;
+              };
+              reader.readAsDataURL(file);
+            }
+          });
+        }
+      } else if (section === "security") {
+        content.innerHTML = `<h3>Security Settings</h3><p>Change password / 2FA settings here...</p>`;
+      } else if (section === "history") {
+        content.innerHTML = `
+      <h3>Medical History</h3>
+      <table>
+        <tr><th>Date</th><th>Condition</th><th>Treatment</th></tr>
+        <tr><td>2024-05-12</td><td>Fever</td><td>Paracetamol</td></tr>
+        <tr><td>2023-11-03</td><td>Cough</td><td>Normal</td></tr>
+      </table>
+    `;
+      } else if (section === "documents") {
+        content.innerHTML = `<h3>Documents</h3><p>Upload/download medical documents here.</p>`;
+      }
+
+      content.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const userId = "{{ id }}"; // pass this from Flask
+      const baseUrl = window.location.origin;
+      const dashboardLink = `${baseUrl}/admin/dashboard/${userId}`;
+
+      new QRCode(document.getElementById("qrcode"), {
+        text: dashboardLink,
+        width: 120,
+        height: 120,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Worker Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .card { border: 1px solid #ccc; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        h2 { margin-top: 0; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Worker Information</h2>
+        <p><strong>Name:</strong> {{worker.name}}</p>
+        <p><strong>Email:</strong> {{worker.email}}</p>
+        <p><strong>AADHAAR:</strong> XXXX-XXXX-{{worker.aadhaar[-4:]}}</p>
+    </div>
+
+    <div class="card">
+        <h2>Medical History</h2>
+        {% if worker_history %}
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Condition</th>
+                <th>Treatment</th>
+            </tr>
+            {% for record in worker_history %}
+            <tr>
+                <td>{{ record.date_diagnosed.strftime('%d-%m-%Y') if record.date_diagnosed else 'N/A' }}</td>
+                <td>{{record.condition}}</td>
+                <td>{{record.details}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No history found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

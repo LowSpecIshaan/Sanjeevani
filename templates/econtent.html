@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>E-Content - Health Education</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', 'Roboto', 'Noto Sans', sans-serif;
+            background: linear-gradient(135deg, #d0ffe1 0%, #d3fff1 50%, #baffeb 100%);
+            min-height: 100vh;
+        }
+
+        /* ✅ Navbar Styling */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #ff8731 0%, #ed7636 50%, #c55529 100%);
+            /* deeper green */
+            padding: 10px 20px;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
+        .navbar .nav-links {
+            list-style: none;
+            padding-top: 13px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar .nav-links li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .navbar .nav-links li a:hover {
+            color: #ffbd60;
+            /* soft yellow highlight */
+        }
+
+        .navbar .hamburger {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        /* 🔽 Dropdown Styling */
+        .navbar .dropdown {
+            position: relative;
+        }
+
+        .navbar .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #f0fdf4;
+            /* very light green */
+            list-style: none;
+            padding: 10px 0;
+            border-radius: 6px;
+            min-width: 160px;
+            z-index: 1200;
+        }
+
+        .navbar .dropdown-menu li {
+            padding: 8px 15px;
+        }
+
+        .navbar .dropdown-menu li a {
+            color: #5f3106;
+            text-decoration: none;
+            display: block;
+        }
+
+        .navbar .dropdown-menu li a:hover {
+            color: #c96b00;
+            /* teal hover */
+        }
+
+        /* Show dropdown on hover (desktop) */
+        .navbar .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        /* ✅ Responsive Navbar */
+        @media (max-width: 768px) {
+            body {
+                background: linear-gradient(135deg, #d0ffe1 0%, #d3fff1 50%, #baffeb 100%);
+            }
+
+            .navbar .dropdown-menu {
+                position: static;
+                min-width: unset;
+                background: #f0fdf4;
+                border-radius: 6px;
+                margin-top: 5px;
+                display: none;
+                /* start hidden */
+                flex-direction: column;
+            }
+
+            .navbar .dropdown.open .dropdown-menu {
+                display: flex;
+                /* toggle with JS */
+            }
+
+            .navbar .nav-links {
+                flex-direction: column;
+                background: linear-gradient(135deg, #ff8731 0%, #ed7636 50%, #c55529 100%);
+                position: absolute;
+                top: 55px;
+                right: 10px;
+                width: 200px;
+                border-radius: 8px;
+                padding: 15px;
+
+                /* Start hidden */
+                max-height: 0;
+                opacity: 0;
+                overflow: hidden;
+
+                /* Smooth animation */
+                transition: max-height 0.4s ease, opacity 0.4s ease;
+            }
+
+            .navbar .nav-links.active {
+                display: flex;
+                /* Keep flex so children are visible */
+                max-height: 500px;
+                /* Big enough for your links */
+                opacity: 1;
+            }
+
+            .navbar .hamburger {
+                display: block;
+            }
+        }
+
+        /* ✅ Page Title */
+        h2.page-title {
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #462200;
+            /* dark green */
+        }
+
+        /* ✅ Video Cards */
+        .video-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #ffedd4;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .video-title {
+            padding: 15px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #065f46;
+            background: #fff7ea;
+        }
+
+        /* ✅ Container */
+        .container {
+            max-width: 1200px;
+        }
+
+        .footer {
+            width: 100%;
+            max-width: 100vw;
+            /* prevent overflow on mobile */
+            box-sizing: border-box;
+            /* include padding in width */
+            background-color: #f9f9f9;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+            margin-top: 40px;
+            overflow-wrap: break-word;
+            /* break long text */
+        }
+
+        .footer a {
+            color: #16a34a;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">HealthRecord</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="/dashboard"><i class="fas fa-columns"></i> {% if session.get('lang') == 'ml' %}
+                    ഡാഷ് ബോർഡ്
+                    {% elif session.get('lang') == 'hn' %}
+                    डैशबोर्ड
+                    {% else %}
+                    Dashboard
+                    {% endif %} </a></li>
+            <li>
+                <a href="/econtent"><i class="fas fa-book-open"></i>
+                    {% if session.get('lang') == 'ml' %}
+                    ഇ-കണ്ടന്റ്
+                    {% elif session.get('lang') == 'hn' %}
+                    ई-कॉन्टेन्ट
+                    {% else %}
+                    E-Content
+                    {% endif %}
+                </a>
+            </li>
+
+
+            <!-- 🔽 Language Dropdown -->
+            <li class="dropdown">
+                <a href="#"><i class="fas fa-globe"></i> {% if session.get('lang') == 'ml' %}
+                    ഭാഷ
+                    {% elif session.get('lang') == 'hn' %}
+                    भाषा
+                    {% else %}
+                    Languages
+                    {% endif %} <i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/set_language/en">English</a></li>
+                    <li><a href="/set_language/ml">മലയാളം (Malayalam)</a></li>
+                    <li><a href="/set_language/hn">हिन्दी (Hindi)</a></li>
+                </ul>
+            </li>
+
+            <li><a href="/profile"><i class="fas fa-user"></i> {% if session.get('lang') == 'ml' %}
+                    നിങ്ങളുടെ വിവരങ്ങൾ
+                    {% elif session.get('lang') == 'hn' %}
+                    आपकी जानकारी
+                    {% else %}
+                    Profile
+                    {% endif %} </a></li>
+
+            <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> {% if session.get('lang') == 'ml' %}
+                    എക്സിറ്റ്
+                    {% elif session.get('lang') == 'hn' %}
+                    लॉगआउट
+                    {% else %}
+                    Logout
+                    {% endif %} </a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+    <div class="container py-5">
+        <h2 class="page-title text-center">
+            <i class="fas"></i> Health Education Videos
+        </h2>
+
+        <!-- Row 1 -->
+        <div class="row g-4">
+            <!-- Video 1 -->
+            <div class="col-md-4">
+                <div class="video-card">
+                    <a href="https://youtu.be/S_-5Xv-OZ38?si=K54vyz27jX7aKUus" target="_blank"
+                        style="position:relative; display:block; width:100%; height:220px;">
+                        <img src="../static/handwash1.jpg" alt="Handwashing Importance"
+                            style="width:100%; height:220px; object-fit:cover; border-radius:10px;">
+                        <i class="fas fa-play-circle" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+                       font-size:3rem; color:white; text-shadow:0 0 10px rgba(0,0,0,0.6);"></i>
+                    </a>
+                    <div class="video-title">Handwashing Importance</div>
+                </div>
+            </div>
+
+            <!-- Video 2 -->
+            <div class="col-md-4">
+                <div class="video-card">
+                    <a href="https://youtu.be/XD2Fn8LCrJM?si=RblW6O7C2AHPWLGw" target="_blank"
+                        style="position:relative; display:block; width:100%; height:220px;">
+                        <img src="../static/TB1.jpg" alt="Tuberculosis Importance"
+                            style="width:100%; height:220px; object-fit:cover; border-radius:10px;">
+                        <i class="fas fa-play-circle" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+                       font-size:3rem; color:white; text-shadow:0 0 10px rgba(0,0,0,0.6);"></i>
+                    </a>
+                    <div class="video-title">Tuberculosis Awareness</div>
+                </div>
+            </div>
+
+            <!-- Video 3 -->
+            <div class="col-md-4">
+                <div class="video-card">
+                    <a href="https://youtu.be/Mqtzgv2tP0c?si=5MEt5ScatgSwfTal" target="_blank"
+                        style="position:relative; display:block; width:100%; height:220px;">
+                        <img src="../static/dengue1.jpg" alt="Dengue Prevention"
+                            style="width:100%; height:220px; object-fit:cover; border-radius:10px;">
+                        <i class="fas fa-play-circle" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+                       font-size:3rem; color:white; text-shadow:0 0 10px rgba(0,0,0,0.6);"></i>
+                    </a>
+                    <div class="video-title">Dengue Prevention</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="row g-4 mt-2">
+            <!-- Video 4 -->
+            <div class="col-md-4">
+                <div class="video-card">
+                    <a href="https://youtube.com/watch?v=Emp7S0BYSyw" target="_blank"
+                        style="position:relative; display:block; width:100%; height:220px;">
+                        <img src="https://i3.ytimg.com/vi/Emp7S0BYSyw/hqdefault.jpg" alt="Malaria Awareness"
+                            style="width:100%; height:220px; object-fit:cover; border-radius:10px;">
+                        <i class="fas fa-play-circle" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+                       font-size:3rem; color:white; text-shadow:0 0 10px rgba(0,0,0,0.6);"></i>
+                    </a>
+                    <div class="video-title">Malaria Awareness</div>
+                </div>
+            </div>
+
+            <!-- Video 5 -->
+            <div class="col-md-4">
+                <div class="video-card">
+                    <a href="https://youtu.be/W4HDj2CcPAM?si=KEyjpBzL95csCBCx" target="_blank"
+                        style="position:relative; display:block; width:100%; height:220px;">
+                        <img src="https://i3.ytimg.com/vi/W4HDj2CcPAM/hqdefault.jpg" alt="COVID-19 Safety"
+                            style="width:100%; height:220px; object-fit:cover; border-radius:10px;">
+                        <i class="fas fa-play-circle" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+                       font-size:3rem; color:white; text-shadow:0 0 10px rgba(0,0,0,0.6);"></i>
+                    </a>
+                    <div class="video-title">COVID-19 Safety</div>
+                </div>
+            </div>
+
+            <!-- Video 6 -->
+            <div class="col-md-4">
+                <div class="video-card">
+                    <a href="https://youtu.be/HmG_bhlaWg4?si=YqAfkGDC00B69dih" target="_blank"
+                        style="position:relative; display:block; width:100%; height:220px;">
+                        <img src="https://img.youtube.com/vi/HmG_bhlaWg4/maxresdefault.jpg" alt="Nutrition Awareness"
+                            style="width:100%; height:220px; object-fit:cover; border-radius:10px;">
+                        <i class="fas fa-play-circle" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+                       font-size:3rem; color:white; text-shadow:0 0 10px rgba(0,0,0,0.6);"></i>
+                    </a>
+                    <div class="video-title">Nutrition Awareness</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="row g-4 mt-2">
+            <!-- Video 7 -->
+            <div class="col-md-4">
+                <div class="video-card">
+                    <a href="https://youtu.be/ziMHFOUgLQk?si=3D_hqypdKiCUvnMJ" target="_blank"
+                        style="position:relative; display:block; width:100%; height:220px;">
+                        <img src="https://img.youtube.com/vi/ziMHFOUgLQk/sddefault.jpg" alt="Mental Health Awareness"
+                            style="width:100%; height:220px; object-fit:cover; border-radius:10px;">
+                        <i class="fas fa-play-circle" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+                       font-size:3rem; color:white; text-shadow:0 0 10px rgba(0,0,0,0.6);"></i>
+                    </a>
+                    <div class="video-title">Mental Health Awareness</div>
+                </div>
+            </div>
+
+            <!-- Video 8 -->
+            <div class="col-md-4">
+                <div class="video-card">
+                    <a href="https://youtu.be/jc-VYdnXEBY?si=WRyJj76J9NTqRnUL" target="_blank"
+                        style="position:relative; display:block; width:100%; height:220px;">
+                        <img src="https://i3.ytimg.com/vi/jc-VYdnXEBY/hqdefault.jpg" alt="Child Care"
+                            style="width:100%; height:220px; object-fit:cover; border-radius:10px;">
+                        <i class="fas fa-play-circle" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+                       font-size:3rem; color:white; text-shadow:0 0 10px rgba(0,0,0,0.6);"></i>
+                    </a>
+                    <div class="video-title">Child Care</div>
+                </div>
+            </div>
+
+            <!-- Video 9 -->
+            <div class="col-md-4">
+                <div class="video-card">
+                    <a href="https://youtu.be/UOMIRVIGOSA?si=oGWRZD1AAi7LcvUC" target="_blank"
+                        style="position:relative; display:block; width:100%; height:220px;">
+                        <img src="https://img.youtube.com/vi/UOMIRVIGOSA/sddefault.jpg" alt="Importance of Vaccination"
+                            style="width:100%; height:220px; object-fit:cover; border-radius:10px;">
+                        <i class="fas fa-play-circle" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+                       font-size:3rem; color:white; text-shadow:0 0 10px rgba(0,0,0,0.6);"></i>
+                    </a>
+                    <div class="video-title">Importance of Vaccination</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 Sanjeevani. All rights reserved.</p>
+            <p>
+                <a href="/terms">Terms & Conditions</a> |
+                <span>This app uses your Aadhaar information ONLY for Authentication.</span>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const hamburger = document.getElementById("hamburger");
+            const navLinks = document.getElementById("navLinks");
+
+            // Hamburger menu toggle
+            hamburger.addEventListener("click", (e) => {
+                e.stopPropagation(); // prevent this click from triggering document click
+                navLinks.classList.toggle("active");
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener("click", (e) => {
+                if (navLinks.classList.contains("active") && !navLinks.contains(e.target)) {
+                    navLinks.classList.remove("active");
+                }
+            });
+
+            // Optional: Prevent clicks inside navLinks from closing it
+            navLinks.addEventListener("click", (e) => {
+                e.stopPropagation();
+            });
+
+            // Mobile dropdown toggle (like Language menu)
+            document.querySelectorAll(".dropdown > a").forEach(item => {
+                item.addEventListener("click", (e) => {
+                    if (window.innerWidth <= 768) { // only for mobile
+                        e.preventDefault();
+                        item.parentElement.classList.toggle("open");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

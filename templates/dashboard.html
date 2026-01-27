@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="../static/dashboardCss.css">
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="logo">Sanjeevani</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#"><i class="fas fa-columns"></i> {% if session.get('lang') == 'ml' %}
+          ഡാഷ് ബോർഡ്
+          {% elif session.get('lang') == 'hn' %}
+          डैशबोर्ड
+          {% else %}
+          Dashboard
+          {% endif %} </a></li>
+      <li>
+        <a href="/econtent"><i class="fas fa-book-open"></i>
+          {% if session.get('lang') == 'ml' %}
+          ഇ-കണ്ടന്റ്
+          {% elif session.get('lang') == 'hn' %}
+          ई-कॉन्टेन्ट
+          {% else %}
+          E-Content
+          {% endif %}
+        </a>
+      </li>
+
+
+      <!-- 🔽 Language Dropdown -->
+      <li class="dropdown">
+        <a href="#"><i class="fas fa-globe"></i> {% if session.get('lang') == 'ml' %}
+          ഭാഷ
+          {% elif session.get('lang') == 'hn' %}
+          भाषा
+          {% else %}
+          Languages
+          {% endif %} <i class="fas fa-caret-down"></i></a>
+        <ul class="dropdown-menu">
+          <li><a href="/set_language/en">English</a></li>
+          <li><a href="/set_language/ml">മലയാളം (Malayalam)</a></li>
+          <li><a href="/set_language/hn">हिन्दी (Hindi)</a></li>
+        </ul>
+      </li>
+      <li><a href="/profile"><i class="fas fa-user"></i> {% if session.get('lang') == 'ml' %}
+          നിങ്ങളുടെ വിവരങ്ങൾ
+          {% elif session.get('lang') == 'hn' %}
+          आपकी जानकारी
+          {% else %}
+          Profile
+          {% endif %} </a></li>
+
+      <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> {% if session.get('lang') == 'ml' %}
+          എക്സിറ്റ്
+          {% elif session.get('lang') == 'hn' %}
+          लॉगआउट
+          {% else %}
+          Logout
+          {% endif %} </a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- Worker Info -->
+    <div class="worker-info">
+      <div class="worker-text">
+        <h2>
+          {% if session.get('lang') == 'ml' %}
+          സ്വാഗതം, {{ name }}.
+          {% elif session.get('lang') == 'hn' %}
+          स्वागत है, {{ name }}.
+          {% else %}
+          Welcome, {{ name }}.
+          {% endif %}
+        </h2>
+        <p>
+          {% if session.get('lang') == 'ml' %}
+          ആധാർ ഐഡി:
+          {% elif session.get('lang') == 'hn' %}
+          आधार आईडी:
+          {% else %}
+          AADHAAR ID:
+          {% endif %} XXXX-XXXX-{{aadhaar}}
+        </p>
+      </div>
+      {% if profile_pic %}
+      <div class="worker-pic">
+        <img src="data:image/png;base64,{{ profile_pic }}" alt="Profile Picture" class="profile-pic">
+      </div>
+      {% else %}
+      <div class="no-pic">
+          <img src="../static/download.png" alt="No Profile Picture :(" class="no-profile-pic">
+      </div>
+      {% endif %}
+    </div>
+
+
+    <!-- Dashboard Options -->
+    <div class="cards">
+      <div class="card history" onclick="showSection('medical')">
+        <i class="fas fa-notes-medical"></i>
+        <p>{% if session.get('lang') == 'ml' %}
+          മെഡിക്കൽ റെക്കോർഡ്
+          {% elif session.get('lang') == 'hn' %}
+          मेडिकल रिकॉर्ड
+          {% else %}
+          Medical History
+          {% endif %}</p>
+      </div>
+      <div class="card AI" onclick="showSection('support')">
+        <i class="fas fa-robot"></i>
+        <p>{% if session.get('lang') == 'ml' %}
+          AI ഹെൽത്ത് കെയർ പിന്തുണ
+          {% elif session.get('lang') == 'hn' %}
+          एआई स्वास्थ्य सहायता
+          {% else %}
+          AI Healthcare Support
+          {% endif %}</p>
+      </div>
+      <div class="card network" onclick="showSection('reminders')">
+        <i class="fas fa-users"></i>
+        <p>{% if session.get('lang') == 'ml' %}
+          നിങ്ങളുടെ കൂടിക്കാഴ്ചകൾ
+          {% elif session.get('lang') == 'hn' %}
+          आपकी नियुक्तियाँ
+          {% else %}
+          Your Appointments
+          {% endif %}</p>
+      </div>
+      <div class="card emergency" onclick="showSection('documents')">
+        <i class="fas fa-ambulance"></i>
+        <p>{% if session.get('lang') == 'ml' %}
+          അടിയന്തിര സഹായം
+          {% elif session.get('lang') == 'hn' %}
+          आपातकालीन
+          {% else %}
+          Emergency
+          {% endif %}</p>
+      </div>
+    </div>
+
+    <!-- Dynamic Content -->
+    <div id="content" class="content"></div>
+  </div>
+  <div class="hero-image" role="img" aria-label="Kerala visuals for migrant health record system">
+    <img src="./static/Kerala-tourism1.jpg" alt="Kerala backwaters with healthcare theme" />
+    <img src="./static/Kerala-tourism2.jpg" alt="Migrant workers in Kerala medical setting" />
+    <img src="./static/Kerala-tourism3.jpg" alt="Healthcare awareness in Kerala greenery" />
+  </div>
+  <footer class="footer">
+    <div class="footer-content">
+      <p>&copy; 2025 Sanjeevani. All rights reserved.</p>
+      <p>
+        <a href="/terms">Terms & Conditions</a> |
+        <span>This app uses your Aadhaar information ONLY for Authentication.</span>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../static/dashboardJs.js"></script>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <script>
+    {% for message in messages %}
+    alert("{{ message }}");
+    {% endfor %}
+  </script>
+  {% endif %}
+  {% endwith %}
+</body>
+
+</html>

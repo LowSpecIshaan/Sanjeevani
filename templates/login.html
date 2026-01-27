@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Digital Health Record Management System for Migrant Workers in Kerala</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Link to external CSS -->
+  <link rel="stylesheet" href="../static/login.css" />
+</head>
+
+<body>
+
+  <div class="form-container my-2" role="main" aria-label="Authentication forms">
+    <div class="tab-buttons" role="tablist" aria-label="Authentication tabs">
+      <button class="tab-button active" id="login-tab" role="tab" aria-selected="true" aria-controls="login-panel"
+        tabindex="0" type="button">
+        Login
+      </button>
+      <button class="tab-button" id="signup-tab" role="tab" aria-selected="false" aria-controls="signup-panel"
+        tabindex="-1" type="button">
+        Signup
+      </button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <section id="login-panel" role="tabpanel" aria-labelledby="login-tab" tabindex="0">
+      <h2 class="text-2xl font-semibold text-gray-800 text-center mb-3">
+        Worker Login
+      </h2>
+      <form id="loginForm" action="/login" method="post" novalidate>
+        <input type="hidden" name="form_type" value="login">
+        <fieldset class="login-method-group mb-4" aria-describedby="loginMethodDesc">
+
+          <legend class="text-l text-gray-700 font-small mb-2">Login Method</legend>
+          <p id="loginMethodDesc" class="sr-only">Choose to login using Email or Aadhaar Card Number</p>
+          <label class="inline-flex items-center mr-6 cursor-pointer">
+            <input type="radio" name="loginMethod" value="email" checked class="form-radio text-green-600"
+              aria-checked="true" />
+            <span class="ml-2 text-gray-700">Email</span>
+          </label>
+          <label class="inline-flex items-center cursor-pointer">
+            <input type="radio" name="loginMethod" value="aadhaar" class="form-radio text-green-600"
+              aria-checked="false" />
+            <span class="ml-2 text-gray-700">Aadhaar Card</span>
+          </label>
+        </fieldset>
+
+        <div class="mb-4" id="emailField">
+          <label for="email" class="block text-gray-700 text-sm font-medium mb-2">Email ID</label>
+          <input type="text" id="email" name="email"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            placeholder="Enter your Email ID" aria-describedby="emailHelp" autocomplete="email" />
+          <small id="emailHelp" class="text-gray-500">Enter your registered Email ID.</small>
+        </div>
+
+        <div class="mb-4 hidden" id="aadhaarField">
+          <label for="aadhaar" class="block text-gray-700 text-sm font-medium mb-2">Aadhaar Card Number</label>
+          <input type="text" id="aadhaar" name="aadhaar" inputmode="numeric" pattern="\d{12}" maxlength="12"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            placeholder="Enter your 12-digit Aadhaar number" aria-describedby="aadhaarHelp" autocomplete="aadhaar" />
+          <small id="aadhaarHelp" class="text-gray-500">Enter your 12-digit Aadhaar card number without spaces.</small>
+        </div>
+
+        <div class="mb-4">
+          <label for="password" class="block text-gray-700 text-sm font-medium mb-2">Password</label>
+          <input type="password" id="password" name="password"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            placeholder="Enter your password" autocomplete="current-password" required />
+        </div>
+
+        <div class="flex items-center justify-between mb-4">
+          <a href="#" class="text-sm text-green-600 hover:text-green-800">Forgot Password?</a>
+        </div>
+
+        <button type="submit"
+          class="btn-primary w-full py-2 px-4 rounded-md text-white font-medium focus:outline-none focus:ring-2 focus:ring-green-500 transform transition duration-200 hover:scale-105">
+          Login
+        </button>
+      </form>
+    </section>
+
+    <!-- SIGNUP FORM -->
+    <section id="signup-panel" role="tabpanel" aria-labelledby="signup-tab" tabindex="0" class="hidden">
+      <h2 class="text-2xl font-semibold text-gray-800 text-center mb-6">
+        Worker Signup
+      </h2>
+      <form id="signupForm" action="/login" method="post" novalidate>
+        <input type="hidden" name="form_type" value="signup">
+        <div class="mb-4">
+          <label for="signupName" class="block text-gray-700 text-sm font-medium mb-2">Full Name</label>
+          <input type="text" id="signupName" name="fullname"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            placeholder="Enter your full name" autocomplete="name" required />
+        </div>
+        
+        <div class="mb-4">
+  <label for="address" class="block text-gray-700 text-sm font-medium mb-2">Address</label>
+  <input type="text" name="address" id="address"
+    class="w-full px-3 py-2 border border-gray-300 rounded-md 
+           focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+    placeholder="House/Street Number" value="{{ address }}" required />
+</div>
+
+<div class="mb-4">
+  <label for="city" class="block text-gray-700 text-sm font-medium mb-2">City</label>
+  <select name="city" id="city"
+    class="w-full px-3 py-2 border border-gray-300 rounded-md 
+           focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+    required>
+    <option value="" disabled selected>Select City</option>
+    <option value="Thiruvananthapuram" {% if city == 'Thiruvananthapuram' %}selected{% endif %}>Thiruvananthapuram</option>
+    <option value="Kochi" {% if city == 'Kochi' %}selected{% endif %}>Kochi</option>
+    <option value="Kozhikode" {% if city == 'Kozhikode' %}selected{% endif %}>Kozhikode</option>
+    <option value="Kollam" {% if city == 'Kollam' %}selected{% endif %}>Kollam</option>
+    <option value="Alappuzha" {% if city == 'Alappuzha' %}selected{% endif %}>Alappuzha</option>
+    <option value="Thrissur" {% if city == 'Thrissur' %}selected{% endif %}>Thrissur</option>
+    <option value="Kannur" {% if city == 'Kannur' %}selected{% endif %}>Kannur</option>
+    <option value="Palakkad" {% if city == 'Palakkad' %}selected{% endif %}>Palakkad</option>
+  </select>
+</div>
+
+
+        <div class="mb-4">
+          <label for="signupAadhaar" class="block text-gray-700 text-sm font-medium mb-2">Aadhaar Card Number</label>
+          <input type="text" id="signupAadhaar" name="aadhaar" inputmode="numeric" pattern="\d{12}" maxlength="12"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            placeholder="Enter your 12-digit Aadhaar number" aria-describedby="signupAadhaarHelp" autocomplete="off"
+            required />
+        </div>
+
+        <div class="mb-4">
+          <label for="signupEmail" class="block text-gray-700 text-sm font-medium mb-2">Enter Email</label>
+          <input type="text" id="signupEmail" name="email"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            placeholder="Enter a valid Email ID" autocomplete="email" required />
+        </div>
+
+        <div class="mb-4">
+          <label for="signupPassword" class="block text-gray-700 text-sm font-medium mb-2">Password</label>
+          <input type="password" id="signupPassword" name="password"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            placeholder="Create a password" autocomplete="new-password" required />
+        </div>
+
+        <div class="mb-4">
+          <label for="signupPasswordConfirm" class="block text-gray-700 text-sm font-medium mb-2">Confirm
+            Password</label>
+          <input type="password" id="signupPasswordConfirm" name="passwordConfirm"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            placeholder="Confirm your password" autocomplete="new-password" required />
+        </div>
+        <div class="flex items-center justify-between mb-4">
+          <label class="inline-flex items-center cursor-pointer">
+            <input type="checkbox" class="rounded border-gray-300 text-green-600 shadow-sm focus:ring-green-500"
+              name="tandc" id="tandc" />
+            <span class="ml-2 text-gray-600 text-sm">I consent the use of my AADHAAR info and agree to all <a
+                class="tandc" href="http://www.youtube.com/" target="_blank">Terms & Conditions.</a></span>
+          </label>
+        </div>
+
+        <button type="submit"
+          class="btn-primary w-full py-2 px-4 rounded-md text-white font-medium focus:outline-none focus:ring-2 focus:ring-green-500 transform transition duration-200 hover:scale-105">
+          Signup
+        </button>
+      </form>
+    </section>
+  </div>
+
+  <div class="sdg-info my-2" aria-live="polite">
+    <p>
+      This system supports Sustainable Development Goal 3 (SDG 3) by promoting
+      equitable access to quality healthcare for migrant workers in Kerala.
+    </p>
+  </div>
+
+  <!-- Link to external JS -->
+  <script src="../static/login.js"></script>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <script>
+        {% for message in messages %}
+          alert("{{ message }}");
+        {% endfor %}
+      </script>
+    {% endif %}
+  {% endwith %}
+</body>
+
+</html>
