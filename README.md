@@ -1,4 +1,4 @@
-📌 Sanjeevani — AI-Powered Healthcare Assistant for Migrant Workers
+📌 Sanjeevani — AI-Powered Healthcare Assistant for Migrant Workers of Kerala (built for SIH'25)
 
 Sanjeevani is a Flask-based web application designed to assist migrant workers in Kerala with healthcare support, medical history management, and AI-driven preliminary diagnoses.
 The platform enables users to store health records, access e-content, update personal profiles, and receive quick AI-based medical guidance.
@@ -111,3 +111,4 @@ Add your keys/passwords there.
 
 4. Run the application
 python app.py
+
